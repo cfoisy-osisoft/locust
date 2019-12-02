@@ -20,8 +20,8 @@ def login(self):
         "v1-preview",
         "65292b6c-ec16-414a-b583-ce7ae04046d4",
         "https://dat-b.osisoft.com",
-        "228d0d48-c8b2-4cdd-8c4e-a156654432f3",
-        "2/YME45JhNfv97W/gB/GR0Z6A64QM54rvn/uRiMAK18=",
+        "<client-id>",
+        "<client-secret>",
         web_client=self.client,
     )
     # l.client.post("/login", {"username":"ellen_key", "password":"education"})
