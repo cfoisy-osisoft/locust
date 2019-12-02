@@ -7,6 +7,7 @@ from ocs_hackdavis import (
     ucdavis_get_config_data,
 )
 import random
+import os
 
 buildings = ucdavis_buildings()
 all_dv_ids = []
@@ -20,32 +21,29 @@ def login(self):
         "v1-preview",
         "65292b6c-ec16-414a-b583-ce7ae04046d4",
         "https://dat-b.osisoft.com",
-        "<client-id>",
-        "<client-secret>",
+        os.environ["CLIENT_ID"],
+        os.environ["CLIENT_SECRET"],
         web_client=self.client,
     )
-    # l.client.post("/login", {"username":"ellen_key", "password":"education"})
 
 
 def logout(self):
     pass
-    # l.client.post("/logout", {"username":"ellen_key", "password":"education"})
 
 
 def get_dv(self):
-    dv_id = random.choice(all_dv_ids)
+    bc_dv_id = random.choice(all_dv_ids)
+    b, c, dv_id = bc_dv_id
     csv, token = self.ocs_client.Dataviews.getDataInterpolated(
-        namespace_id="UC__Davis",
+        namespace_id=os.environ.get("NAMESPACE_ID", "UC__Davis"),
         dataview_id=dv_id,
         startIndex="2019-03-18",
         endIndex="2019-05-18",
         interval="00:05:00",
         count=200000,
         form="csvh",
-        locust_name=f"Dataview: {dv_id}",
+        locust_name=f"{bc_dv_id}",
     )
-
-    # l.client.get("/")
 
 
 class UserBehavior(TaskSet):
@@ -61,3 +59,4 @@ class UserBehavior(TaskSet):
 class WebsiteUser(HttpLocust):
     task_set = UserBehavior
     wait_time = between(3.0, 5.0)
+

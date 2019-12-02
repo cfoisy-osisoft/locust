@@ -1,7 +1,8 @@
 FROM python:3.6-alpine as builder
 
 RUN apk --no-cache add g++ zeromq-dev libffi-dev 
-COPY . /src
+COPY locust/ /src/locust
+COPY setup.* LICENSE* MANIFEST* README* /src/
 WORKDIR /src
 RUN pip install .
 RUN pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ocs-hackdavis==0.10.0
