@@ -6,7 +6,7 @@
 # fi
 
 LOCUST_MODE="${LOCUST_MODE:=standalone}"
-_LOCUST_OPTS="-f ${LOCUSTFILE_PATH:-./locustfile.py} -H ${TARGET_HOST}"
+_LOCUST_OPTS="-f ${LOCUSTFILE_PATH:-/locust-tasks/tasks.py} -H ${TARGET_HOST}"
 
 if [ "${LOCUST_MODE}" = "master" ]; then
     _LOCUST_OPTS="${_LOCUST_OPTS} --master"
