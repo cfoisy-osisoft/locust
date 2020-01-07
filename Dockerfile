@@ -5,7 +5,7 @@ COPY locust/ /src/locust
 COPY setup.* LICENSE* MANIFEST* README* /src/
 WORKDIR /src
 RUN pip install .
-RUN pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ocs-hackdavis==0.10.0
+RUN pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ocs-hackdavis==0.18.0
 RUN pip uninstall -y ocs-sample-library-preview
 RUN pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple ocs-sample-library-preview-hub==0.0.36rc0 
 RUN pip install pyyaml
