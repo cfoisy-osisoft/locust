@@ -11,7 +11,7 @@ import random
 import os
 
 
-bad_dv_ids = []
+bad_dv_ids = ["hackdavis_4a9ca644"]
 
 buildings = ucdavis_buildings()
 all_dv_ids = []
@@ -35,6 +35,8 @@ def login(self):
         web_client=self.client,
     )
     self.ocs_client.request_timeout = int(os.environ.get("OCS_TIMEOUT", "30"))
+    self.dv_month_span = int(os.environ.get("DV_SPAN_MONTH", "4"))
+    self.dv_min_interval = int(os.environ.get("DV_INTERVAL", "20"))
 
 
 def logout(self):
@@ -52,12 +54,12 @@ def get_dv(self):
         dataView_id=dv_id,
         startIndex=start.isoformat(),
         endIndex=(start + four_months).isoformat(),
-        interval="00:20:00",
+        interval=f"00:{self.dv_min_interval}:00",
         count=250000,
         form="csvh",
-        locust_name=f"{bc_dv_id}",
+        locust_name=f"{bc_dv_id}:{self.dv_month_span}:{month_offset[dv_id]:02}",
     )
-    month_offset[dv_id] = (month_offset[dv_id] + 4) % 36
+    month_offset[dv_id] = (month_offset[dv_id] + self.dv_month_span) % 36
 
 
 class UserBehavior(TaskSet):
