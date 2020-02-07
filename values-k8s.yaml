@@ -1,0 +1,97 @@
+Name: locust
+
+image:
+  #  greenbirdit/locust:0.9.0
+  repository: camlf/osisoft-academic  
+  tag: locust-sds-howto-v1
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+service:
+  name: master-web
+  type: NodePort
+  externalPort: 8089
+  internalPort: 8089
+  nodePort: 0
+  annotations: {}
+  extraLabels: {}
+
+# extra volumes, volumeMounts and envs for both worker and master pods
+extraVolumes: []
+# extraVolumes:
+# - name: mySecretVolume
+#   secret:
+#     secretName: mySecret
+# - name: myConfigMapVolume
+#   configMap:
+#     name: myConfigMap
+extraVolumeMounts: []
+# extraVolumeMounts:
+# - name: mySecretVolume
+#   mountPath: /locust/secrets/mySecretVolume/
+# extraEnvs: []
+extraEnvs:
+- name: TENANT_ID
+  value: *******************************
+- name: CLIENT_ID
+  value: *******************************
+- name: CLIENT_SECRET
+  value: *******************************
+- name: LOCUST_SCRIPTS
+  value: /locust-tasks/tasks-sds-howto-v1.py
+- name: NAMESPACE_ID
+  value: "-to-be-set-"
+- name: DV_SPAN_MONTH
+  value: "4"
+- name: DV_INTERVAL
+  value: "2"
+- name: LOCUST_MIN_WAIT
+  value: "0.5"
+- name: LOCUST_MAX_WAIT
+  value: "0.8"
+# - name: MY_SECRET
+#   valueFrom:
+#     secretKeyRef:
+#       name: mySecret
+#       key: mySecretKey
+
+master:
+  config:
+    target-host: https://academic.osisoft.com
+  resources:
+    limits:
+      cpu: 400m
+      memory: 512Mi
+    requests:
+      cpu: 400m
+      memory: 512Mi
+  nodeSelector: {}
+    # kops.k8s.io/instancegroup: master
+  tolerations: {}
+  # - key: "application"
+  #   operator: "Equal"
+  #   value: "api"
+  #   effect: "NoSchedule"
+worker:
+  config:
+
+    # Optional parameter to use an existing configmap instead of deploying one with the Chart
+    configmapName: locust-worker-configs
+
+    # all files from specified configmap (or tasks folder) are mounted under `/locust-tasks`
+    # locust-script: "/locust-tasks/tasks.py"
+  replicaCount: 1 
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+  nodeSelector: {}
+    # kops.k8s.io/instancegroup: worker
+  tolerations: {}
+  # - key: "application"
+  #   operator: "Equal"
+  #   value: "api"
+  #   effect: "NoSchedule"
